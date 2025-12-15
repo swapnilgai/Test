@@ -3,6 +3,7 @@ package com.kotlin.test.feature
 import androidx.compose.runtime.Immutable
 import com.kotlin.test.BaseViewModel
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
@@ -30,7 +31,7 @@ class SearchViewModel(val apiService: ApiService) : BaseViewModel<SearchViewStat
 
     private var searchJob: Job? = null
     init {
-        baseViewModelScope.launch {
+        searchJob = baseViewModelScope.launch {
             searchQuerySharedFlow.distinctUntilChanged().debounce(200).map { searchQuery ->
                 loadSearchData(searchQuery)
             }.collectLatest { result ->
@@ -48,7 +49,7 @@ class SearchViewModel(val apiService: ApiService) : BaseViewModel<SearchViewStat
            val result =  withContext(kotlinx.coroutines.Dispatchers.IO){
                 val data = apiService.getData()
                 val filtered = data.filter {
-                    it.instrument_type.contains(input, ignoreCase = true)
+                    it.name.contains(input, ignoreCase = true)
                 }
                 SearchViewState(filtered)
             }

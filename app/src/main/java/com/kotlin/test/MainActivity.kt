@@ -57,7 +57,7 @@ fun HomeScreen(searchViewModel : SearchViewModel = koinViewModel()){
            Column() {
                USearchBar(onQueryChange)
                LazyColumn() {
-                   items( items = cur.data.response, key = { it -> it.id}){
+                   items( items = cur.data.response, key = { it -> it.name}){
                        Text("${it.name}")
                    }
                }
