@@ -1,4 +1,4 @@
-package com.kotlin.test.util.navigation
+package com.kotlin.test
 
 import androidx.compose.runtime.Composable
 
